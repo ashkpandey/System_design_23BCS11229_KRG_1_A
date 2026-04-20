@@ -1,0 +1,228 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="youtube-arch" name="YouTube Distributed HLD">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Region: Clients -->
+        <mxCell id="clients" value="Clients&#10;- Web&#10;- Mobile&#10;- TV / Consoles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="180" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Region: Edge / CDN -->
+        <mxCell id="cdn" value="Global CDN / Edge PoPs&#10;- HTTP/2 / HTTP/3 / QUIC&#10;- TLS termination&#10;- Caching HLS/DASH segments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="260" y="180" width="230" height="130" as="geometry"/>
+        </mxCell>
+
+        <!-- Region: Edge LB & API Gateway -->
+        <mxCell id="edgeLB" value="Global Load Balancer (Maglev-style)&#10;- Anycast DNS&#10;- Geo-routing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="530" y="90" width="220" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="apiGateway" value="API Gateway&#10;- AuthN/Z&#10;- Rate limiting&#10;- Routing (REST/gRPC)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="530" y="210" width="220" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Region: Internal Service LB -->
+        <mxCell id="svcLB" value="Service Load Balancer&#10;- L7 routing&#10;- Canary / A/B" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="530" y="350" width="220" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Core Microservices Column -->
+        <mxCell id="userSvc" value="User Service&#10;- Profiles&#10;- Subscriptions&#10;- Auth sessions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="800" y="40" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="videoMetaSvc" value="Video Metadata Service&#10;- Titles, tags&#10;- Privacy, ownership&#10;- Play counts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="800" y="150" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="uploadSvc" value="Upload Service&#10;- Chunked uploads&#10;- Resumable sessions&#10;- Validation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="800" y="260" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="streamingSvc" value="Streaming API Service&#10;- Playback tokens&#10;- Manifest selection&#10;- DRM hooks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="800" y="370" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="searchSvc" value="Search Service&#10;- Inverted index&#10;- Ranking&#10;- Autosuggest" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="800" y="480" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="recoSvc" value="Recommendation Service&#10;- Home feed&#10;- Up next&#10;- Personalized rankings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="800" y="590" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="analyticsSvc" value="Analytics / Logging&#10;- View events&#10;- Watch-time stats&#10;- QoE metrics" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="800" y="700" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- Async backbone: Message bus -->
+        <mxCell id="kafka" value="Distributed Message Bus (Kafka/PubSub)&#10;- Events&#10;- Upload → Transcode&#10;- Analytics stream" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="330" width="230" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Video Processing Cluster -->
+        <mxCell id="transcodeMgr" value="Transcoding Orchestrator&#10;- Schedules jobs&#10;- Idempotency&#10;- Priority queues" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="230" width="230" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="encoderWorkers" value="Encoder / Decoder Workers&#10;- FFmpeg-like pipeline&#10;- Multi-resolution renditions&#10;- Audio extraction" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="340" width="230" height="110" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="chunker" value="Chunker / Segmenter&#10;- Split into segments&#10;(e.g. 2-10s)&#10;- GOP aligned" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="470" width="230" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="manifestGen" value="Manifest Generator&#10;- HLS .m3u8&#10;- DASH MPD&#10;- ABR ladder definitions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="590" width="230" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Storage layer: cold + hot -->
+        <mxCell id="rawStore" value="Raw Video Storage&#10;- Object storage&#10;- Original uploads&#10;- Cold/archive tiers" style="shape=database;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="470" width="220" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="segmentStore" value="Segmented Video Storage&#10;- Encoded segments per bitrate&#10;- Regionally replicated" style="shape=database;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="600" width="220" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Metadata / Index / Cache -->
+        <mxCell id="metaDB" value="Metadata Store&#10;- Bigtable / Spanner&#10;- Video + user metadata&#10;- Reco features" style="shape=database;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="80" width="220" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="searchIndex" value="Search Index&#10;- Inverted index&#10;- Full-text metadata&#10;- Ranking signals" style="shape=database;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="200" width="220" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="cache" value="Caching Layer&#10;- Redis / Memcache&#10;- Hot metadata&#10;- Session/cache tokens" style="shape=database;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="720" width="220" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Observability -->
+        <mxCell id="monitoring" value="Monitoring &amp; Metrics&#10;- Prometheus-like TSDB&#10;- Dashboards / alerts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="720" width="230" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- EDGES: Client to CDN / LB -->
+        <mxCell id="e1" edge="1" parent="1" source="clients" target="cdn">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="cdn" target="edgeLB">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges: LB to API Gateway -->
+        <mxCell id="e3" edge="1" parent="1" source="edgeLB" target="apiGateway">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges: API Gateway to internal LB -->
+        <mxCell id="e4" edge="1" parent="1" source="apiGateway" target="svcLB">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges: internal LB to services -->
+        <mxCell id="e5" edge="1" parent="1" source="svcLB" target="userSvc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="svcLB" target="videoMetaSvc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="svcLB" target="uploadSvc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="svcLB" target="streamingSvc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="svcLB" target="searchSvc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="svcLB" target="recoSvc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="svcLB" target="analyticsSvc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges: services to metadata/index/cache -->
+        <mxCell id="e12" edge="1" parent="1" source="userSvc" target="metaDB">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="videoMetaSvc" target="metaDB">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="searchSvc" target="searchIndex">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="recoSvc" target="metaDB">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="recoSvc" target="cache">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="streamingSvc" target="cache">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Upload flow: uploadSvc -> raw store + bus -->
+        <mxCell id="e18" edge="1" parent="1" source="uploadSvc" target="rawStore">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="uploadSvc" target="kafka">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Kafka to processing pipeline -->
+        <mxCell id="e20" edge="1" parent="1" source="kafka" target="transcodeMgr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="transcodeMgr" target="encoderWorkers">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="encoderWorkers" target="chunker">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="chunker" target="segmentStore">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e24" edge="1" parent="1" source="chunker" target="manifestGen">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" source="manifestGen" target="segmentStore">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Segment store to CDN -->
+        <mxCell id="e26" edge="1" parent="1" source="segmentStore" target="cdn">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Playback: streamingSvc to CDN -->
+        <mxCell id="e27" edge="1" parent="1" source="streamingSvc" target="cdn">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Analytics: services to bus and monitoring -->
+        <mxCell id="e28" edge="1" parent="1" source="analyticsSvc" target="kafka">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e29" edge="1" parent="1" source="analyticsSvc" target="monitoring">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e30" edge="1" parent="1" source="streamingSvc" target="analyticsSvc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Clients direct to CDN for segments -->
+        <mxCell id="e31" edge="1" parent="1" source="cdn" target="clients">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
