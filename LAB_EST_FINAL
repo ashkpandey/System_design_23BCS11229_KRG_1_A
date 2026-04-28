@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+class Menu {
+public:
+    void showMenu() { cout << "Showing menu\n"; }
+};
+
+class Payment {
+public:
+    void makePayment() { cout << "Payment successful\n"; }
+};
+
+class Kitchen {
+public:
+    void prepareFood() { cout << "Food is being prepared\n"; }
+};
+
+class Delivery {
+public:
+    void deliverOrder() { cout << "Order delivered\n"; }
+};
+class FoodOrderFacade {
+private:
+    Menu menu;
+    Payment payment;
+    Kitchen kitchen;
+    Delivery delivery;
+
+public:
+    void placeOrder() {
+        menu.showMenu();
+        payment.makePayment();
+        kitchen.prepareFood();
+        delivery.deliverOrder();
+        cout << "Order completed successfully\n";
+    }
+};
+int main() {
+    FoodOrderFacade order;
+    order.placeOrder();
+}
